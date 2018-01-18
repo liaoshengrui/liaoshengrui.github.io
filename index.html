@@ -253,6 +253,184 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://liaoshengrui.github.io/2018/01/18/内存管理笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liaoshengrui">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LsrBlog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/18/内存管理笔记/" itemprop="url">内存管理笔记</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-18T21:41:29+08:00">
+                2018-01-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="OC中的内存管理"><a href="#OC中的内存管理" class="headerlink" title="OC中的内存管理"></a>OC中的内存管理</h3><p>oc作为面向对象的c,其内存也是自己管理的,但oc中对其操作进行了优化<br>从c的自己开辟和回收内存,改进为手动计算引用数</p>
+<p>当引用增加时 调用retain方法为此变量引用数+1<br>当要释放引用时 调用release方法为引用数-1<br>当引用数为0时将释放内存</p>
+<p>在xcode4后 引入了ARC模式 xcode将在编译自动时为各个对象引用数量改变时插入 retain和release方法<br>从此解放双手<br>对循环引用的解决方案为在编写代码时 一方使用强引用 一方使用弱引用</p>
+<h3 id="python的垃圾回收"><a href="#python的垃圾回收" class="headerlink" title="python的垃圾回收"></a>python的垃圾回收</h3><ul>
+<li><p>自动引用计数</p>
+<p>  对象每增加一个引用 引用计数+1<br>  减少引用计数-1 当引用计数为0删除对象</p>
+<p>  缺点:无法清理循环引用</p>
+</li>
+</ul>
+<ul>
+<li><p>隔代回收</p>
+<p> python每个对象创建时 ,都会将其加入零代链表 在满足一定条件(<strong>创建对象计数-回收对象大于一定数量</strong>)后<br>  判断链表中对象是否有互相引用 有的引用计数-1 引用计数为0的删除 引用计数大于1且无互相引用的 加入到  一代链表</p>
+</li>
+</ul>
+<h3 id="Java的垃圾回收"><a href="#Java的垃圾回收" class="headerlink" title="Java的垃圾回收"></a>Java的垃圾回收</h3><ul>
+<li><p>可达性分析</p>
+<p>  以 GC Root对象为起点向下遍历所有对象为可用对象,其余为不可用对象</p>
+<p>  GC Root对象包括下面几种:</p>
+<ol>
+<li>栈中局部变量表中引用的对象</li>
+<li>方法区中静态属性引用的对象</li>
+<li>方法区常量引用的对象</li>
+<li>本地方法栈中JNI引用对象</li>
+</ol>
+</li>
+<li><p>标记-清除算法</p>
+<p>  分为标记,清除两个阶段:首先标记出所有需要回收的对象,标记完成后统一回收所有被标记的对象</p>
+<p>  缺点:标记和清除效率都低,且产生大量不连续内存</p>
+</li>
+<li><p>复制算法( 新生代回收算法 )</p>
+<p>  将内存分为2小1大3块为8:1:1 ,每次只用其中一大一小,当这触发回收时,将其中存活的对象复制到另一块未使用的小内存去,然后将已经使用过的内存空间一次性清理掉</p>
+<p>  当一些对象经过多次Minor Gc后还仍然存活就会被移动到老年代中</p>
+</li>
+<li><p>标记-整理算法 ( 老年代回收算法 )</p>
+<p>  让存活对象统一向一端移动(不可用对象所占内存在移动时被覆盖),然后直接清除边界以外的内存空间</p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://liaoshengrui.github.io/2018/01/13/Okhttp拦截器的使用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -559,7 +737,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -570,7 +748,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -581,7 +759,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
