@@ -253,6 +253,190 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://liaoshengrui.github.io/2018/01/22/Java中的并发编程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liaoshengrui">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LsrBlog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/22/Java中的并发编程/" itemprop="url">Java中的并发编程</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-22T10:44:42+08:00">
+                2018-01-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="并发编程的三个概念"><a href="#并发编程的三个概念" class="headerlink" title="并发编程的三个概念"></a>并发编程的三个概念</h3><ol>
+<li><p>原子性</p>
+<p> 即一个操作或多个操作 要么全部执行并且执行过程不会被打断，要么不执行。</p>
+</li>
+<li><p>可见性</p>
+<p> 指的是多个线程访问同一个变量时，一个线程修改了这个变量的值，其他线程能立即看得到</p>
+</li>
+<li><p>有序性</p>
+<p> 程序执行的顺序按照代码的先后顺序执行</p>
+</li>
+</ol>
+<h3 id="JAVA中内存模型"><a href="#JAVA中内存模型" class="headerlink" title="JAVA中内存模型"></a>JAVA中内存模型</h3><font size="2">java内存模型规定所有的变量都是存在主存当中,每个线程都有自己的工作内存.线程对变量的操作都必须在工作内存中进行,不能直接对主存进行操作.并且每个线程不能访问其他线程的工作内存<br></font>
+
+<p>1.原子性</p>
+<p>对基本数据类型的读取和赋值操作是原子性的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">如:</span><br><span class="line">    x = 10;      //语句1</span><br><span class="line">    y = x;       //语句2</span><br><span class="line">    x++;         //语句3</span><br><span class="line">    x = x + 1;   //语句4</span><br><span class="line"></span><br><span class="line">只有语句1是原子性操作</span><br></pre></td></tr></table></figure></p>
+<p>Java内存模型只保证了基本的读取和赋值操作是原子性操作.<br>实现更大范围操作的原子性,可通过synchronized和Lock来实现</p>
+<ol>
+<li>可见性</li>
+</ol>
+<p>Java提供了volatile关键字来保证可见性</p>
+<p>当一个变量被volatile关键字修饰时,它会保证修改的值会立即被更新到主存。<br>当有其他线程需要读取时,它会去内存中读取新值</p>
+<p>另外通过synchronized和Lock也能保证可见性.<br>在执行完同步代码后释放锁之前会将对其变量的修改刷新到主存中</p>
+<p>3.有序性</p>
+<p>在Java内存模型中,允许编译器和处理器对指令进行重排序。但是重排序过程不会影响到单线程程序的执行，却会影响到多线程并发执行的正确性。</p>
+<p>在Java里面，可以通过volatile关键字来保证一定的“有序性”。另外可以通过synchronized和Lock来保证有序性，很显然，synchronized和Lock保证每个时刻是有一个线程执行同步代码，相当于是让线程顺序执行同步代码，自然就保证了有序性。</p>
+<h3 id="深入剖析volatile关键字"><a href="#深入剖析volatile关键字" class="headerlink" title="深入剖析volatile关键字"></a>深入剖析volatile关键字</h3><ul>
+<li>volatile的两层语义</li>
+</ul>
+<p>一旦一个共享变量(类的成员变量,类的静态成员变量)被volatile修饰后,就具备了两层语义</p>
+<p>1) 保证了不同线程对这个变量进行操作的可见性,即一个线程修改某个变量的值,这个新值对其他线程来说是立即可见的.<br>2) 禁止进行指令重排</p>
+<ul>
+<li>volatile无法保证原子性</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"> public class Test &#123;</span><br><span class="line">    public volatile int inc = 0;</span><br><span class="line"></span><br><span class="line">    public void increase() &#123;</span><br><span class="line">        inc++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        final Test test = new Test();</span><br><span class="line">        for(int i=0;i&lt;10;i++)&#123;</span><br><span class="line">            new Thread()&#123;</span><br><span class="line">                public void run() &#123;</span><br><span class="line">                    for(int j=0;j&lt;1000;j++)</span><br><span class="line">                        test.increase();</span><br><span class="line">                &#125;;</span><br><span class="line">            &#125;.start();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        while(Thread.activeCount()&gt;1)  //保证前面的线程都执行完</span><br><span class="line">            Thread.yield();</span><br><span class="line">        System.out.println(test.inc);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">每次运行结果都不一致，都是一个小于10000的数字。</span><br><span class="line"></span><br><span class="line">根源就在这里，自增操作不是原子性操作，而且volatile也无法保证对变量的任何操作都是原子性的。</span><br><span class="line"></span><br><span class="line">把上面的代码改成以下任何一种都可以达到效果：</span><br><span class="line">采用synchronized：</span><br><span class="line"></span><br><span class="line">public synchronized void increase() &#123;</span><br><span class="line">        inc++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">采用Lock：</span><br><span class="line"></span><br><span class="line">Lock lock = new ReentrantLock();</span><br><span class="line"> public  void increase() &#123;</span><br><span class="line">    lock.lock();</span><br><span class="line">    try &#123;</span><br><span class="line">        inc++;</span><br><span class="line">    &#125; finally&#123;</span><br><span class="line">        lock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">采用AtomicInteger：</span><br><span class="line"></span><br><span class="line">public  AtomicInteger inc = new AtomicInteger();</span><br></pre></td></tr></table></figure>
+<ul>
+<li>volatile能在一定程度上保证有序性</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//x、y为非volatile变量</span><br><span class="line">//flag为volatile变量</span><br><span class="line"></span><br><span class="line">x = 2;        //语句1</span><br><span class="line">y = 0;        //语句2</span><br><span class="line">flag = true;  //语句3</span><br><span class="line">x = 4;         //语句4</span><br><span class="line">y = -1;       //语句5</span><br></pre></td></tr></table></figure>
+<p>由于flag变量为volatile变量，那么在进行指令重排序的过程的时候，不会将语句3放到语句1、语句2前面，也不会讲语句3放到语句4、语句5后面。但是要注意语句1和语句2的顺序、语句4和语句5的顺序是不作任何保证的。</p>
+<p>并且volatile关键字能保证，执行到语句3时，语句1和语句2必定是执行完毕了的，且语句1和语句2的执行结果对语句3、语句4、语句5是可见的。</p>
+<h3 id="volatile关键字的使用场景"><a href="#volatile关键字的使用场景" class="headerlink" title="volatile关键字的使用场景"></a>volatile关键字的使用场景</h3><p>synchronized关键字是防止多个线程同时执行一段代码，那么就会很影响程序执行效率，而volatile关键字在某些情况下性能要优于synchronized，但是要注意volatile关键字是无法替代synchronized关键字的，因为volatile关键字无法保证操作的原子性。</p>
+<p>通常来说，使用volatile必须具备以下2个条件：<br>1) 对变量的写操作不依赖于当前值<br>2) 该变量没有包含在具有其他变量的不变式中</p>
+<p>下面列举几个Java中使用volatile的几个场景:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">1.状态标记量</span><br><span class="line"></span><br><span class="line">volatile boolean inited = false;</span><br><span class="line">//线程1:</span><br><span class="line">context = loadContext();  </span><br><span class="line">inited = true;            </span><br><span class="line"></span><br><span class="line">//线程2:</span><br><span class="line">while(!inited )&#123;</span><br><span class="line">    sleep()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">2.Java 中的双重检查（Double-Check）</span><br><span class="line"></span><br><span class="line">class Singleton&#123;</span><br><span class="line">    private volatile static Singleton instance = null;</span><br><span class="line"></span><br><span class="line">    private Singleton() &#123;&#125;</span><br><span class="line"></span><br><span class="line">    public static Singleton getInstance() &#123;</span><br><span class="line">        if(instance==null) &#123;</span><br><span class="line">            synchronized (Singleton.class) &#123;</span><br><span class="line">                if(instance==null)</span><br><span class="line">                    instance = new Singleton();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://liaoshengrui.github.io/2018/01/20/Picasso源码分析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -918,7 +1102,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
