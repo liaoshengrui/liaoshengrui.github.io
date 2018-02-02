@@ -253,6 +253,162 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://liaoshengrui.github.io/2018/02/02/Android 7.0文件权限和应用安装/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liaoshengrui">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LsrBlog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/02/Android 7.0文件权限和应用安装/" itemprop="url">Android 7.0文件权限和应用安装</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-02T10:07:21+08:00">
+                2018-02-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>最近要给一个应用加上提示更新功能,遇到了几个坑,虽然也很快解决了但是还是记录下来给大家当做提示教训.</p>
+<h2 id="Android-7-0-文件权限"><a href="#Android-7-0-文件权限" class="headerlink" title="Android 7.0 文件权限"></a>Android 7.0 文件权限</h2><p>代码一把梭后,在调试时就碰到了第一个问题,apk下载安装时报了 FileUriExposedException<br>随后了解了一下这是android 7.0新增的文件权限问题.</p>
+<p>从Android 7.0开始,一个应用提供自身文件给其它应用使用时,如果给出一个file://格式的URI的话,应用会抛出FileUriExposedException.这是由于谷歌认为目标app可能不具有文件权限,会造成潜在的问题,所以让这一行为快速失败.</p>
+<p>谷歌官方推荐的解决方案.即使用FileProvider来生成一个content://格式的URI</p>
+<h4 id="manifest声明"><a href="#manifest声明" class="headerlink" title="manifest声明"></a>manifest声明</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;manifest&gt;</span><br><span class="line">    ...</span><br><span class="line">    &lt;application&gt;</span><br><span class="line">        ...</span><br><span class="line">        &lt;provider</span><br><span class="line">            android:name=&quot;android.support.v4.content.FileProvider&quot;</span><br><span class="line">            android:authorities=&quot;packageName.fileprovider&quot;</span><br><span class="line">            android:exported=&quot;false&quot;</span><br><span class="line">            android:grantUriPermissions=&quot;true&quot;&gt;</span><br><span class="line">            &lt;meta-data</span><br><span class="line">                android:name=&quot;android.support.FILE_PROVIDER_PATHS&quot;</span><br><span class="line">                android:resource=&quot;@xml/file_paths&quot; /&gt;</span><br><span class="line">        &lt;/provider&gt;</span><br><span class="line">        ...</span><br><span class="line">    &lt;/application&gt;</span><br><span class="line">&lt;/manifest&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="编写file-paths-xml"><a href="#编写file-paths-xml" class="headerlink" title="编写file_paths.xml"></a>编写file_paths.xml</h4><p>文件的名字没有要求，只要放在xml文件夹下面就可以了,所以为了保证唯一建议加上应用包名</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;paths&gt;</span><br><span class="line">    &lt;external-path path=&quot;.&quot; name=&quot;camera_photos&quot; /&gt;</span><br><span class="line">&lt;/paths&gt;</span><br><span class="line"></span><br><span class="line">&lt;files-path/&gt;  代表的根目录： Context.getFilesDir()</span><br><span class="line">&lt;external-path/&gt; 代表的根目录: Environment.getExternalStorageDirectory()</span><br><span class="line">&lt;cache-path/&gt; 代表的根目录: getCacheDir()</span><br></pre></td></tr></table></figure>
+<p>path 表示根目录下的文件路径 .为所有<br>name 标记名</p>
+<h4 id="使用FileProvider提供的uri"><a href="#使用FileProvider提供的uri" class="headerlink" title="使用FileProvider提供的uri"></a>使用FileProvider提供的uri</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Intent i = new Intent(Intent.ACTION_VIEW);</span><br><span class="line">File file=new File(APK_PATH);</span><br><span class="line">if (Build.VERSION.SDK_INT &gt;= 24) &#123;</span><br><span class="line">  Uri uriForFile = FileProvider.getUriForFile(context, context.getPackageName() + &quot;.fileprovider&quot;, file);</span><br><span class="line">  i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);</span><br><span class="line">  i.setDataAndType(uriForFile, &quot;application/vnd.android.package-archive&quot;);</span><br><span class="line">&#125; else &#123;</span><br><span class="line">  i.setDataAndType(Uri.fromFile(file), &quot;application/vnd.android.package-archive&quot;);</span><br><span class="line">&#125;</span><br><span class="line">  context.startActivity(i);</span><br></pre></td></tr></table></figure>
+<p>然而做好了上面的操作后又报出了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Error:Execution failed for task &apos;:app:processReleaseManifest&apos;.</span><br><span class="line">&gt; Manifest merger failed with multiple errors, see logs</span><br></pre></td></tr></table></figure></p>
+<p>查找资料后发现是自己用的第三方图片选择框架已经使用了android.support.v4.content.FileProvider</p>
+<p>于是写个空provider继承了 FileProvider 问题解决<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public class MyFileProvider extends FileProvider &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">将清单文件中注册的provider修改成自己的provider</span><br><span class="line">&lt;provider</span><br><span class="line">  android:name=&quot;.MyFileProvider&quot;</span><br><span class="line">  android:authorities=&quot;packageName.fileprovider&quot;</span><br><span class="line">  android:exported=&quot;false&quot;</span><br><span class="line">  android:grantUriPermissions=&quot;true&quot;&gt;</span><br><span class="line">  &lt;meta-data</span><br><span class="line">    android:name=&quot;android.support.FILE_PROVIDER_PATHS&quot;</span><br><span class="line">    android:resource=&quot;@xml/file_paths&quot; /&gt;</span><br><span class="line">&lt;/provider&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="APK安装"><a href="#APK安装" class="headerlink" title="APK安装"></a>APK安装</h2><p>终于解决权限问题后开始安装APK,心想终于解决了,然后出现了应用未安装…..</p>
+<p>我眉头一皱发现事情并不简单versionCode和versionName我都加高了啊为什么安装会跟原应用冲突呢?</p>
+<p>仔细一想,应该是签名问题,我当前调试用的是debug自带的签名正式版本是正式的签名.<br>签名后再试,果然解决了</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://liaoshengrui.github.io/2018/01/26/Glide(3.8.0)源码详细解析(一丶基本流程)/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1275,7 +1431,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

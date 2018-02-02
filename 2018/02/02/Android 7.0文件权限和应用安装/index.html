@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="java,oc,python," />
+  <meta name="keywords" content="android," />
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="OC中的内存管理oc作为面向对象的c,其内存也是自己管理的,但oc中对其操作进行了优化从c的自己开辟和回收内存,改进为手动计算引用数 当引用增加时 调用retain方法为此变量引用数+1当要释放引用时 调用release方法为引用数-1当引用数为0时将释放内存 在xcode4后 引入了ARC模式 xcode将在编译自动时为各个对象引用数量改变时插入 retain和release方法从此解放双手对循">
-<meta name="keywords" content="java,oc,python">
+<meta name="description" content="最近要给一个应用加上提示更新功能,遇到了几个坑,虽然也很快解决了但是还是记录下来给大家当做提示教训. Android 7.0 文件权限代码一把梭后,在调试时就碰到了第一个问题,apk下载安装时报了 FileUriExposedException随后了解了一下这是android 7.0新增的文件权限问题. 从Android 7.0开始,一个应用提供自身文件给其它应用使用时,如果给出一个file://">
+<meta name="keywords" content="android">
 <meta property="og:type" content="article">
-<meta property="og:title" content="内存管理笔记">
-<meta property="og:url" content="https://liaoshengrui.github.io/2018/01/18/内存管理笔记/index.html">
+<meta property="og:title" content="Android 7.0文件权限和应用安装">
+<meta property="og:url" content="https://liaoshengrui.github.io/2018/02/02/Android 7.0文件权限和应用安装/index.html">
 <meta property="og:site_name" content="LsrBlog">
-<meta property="og:description" content="OC中的内存管理oc作为面向对象的c,其内存也是自己管理的,但oc中对其操作进行了优化从c的自己开辟和回收内存,改进为手动计算引用数 当引用增加时 调用retain方法为此变量引用数+1当要释放引用时 调用release方法为引用数-1当引用数为0时将释放内存 在xcode4后 引入了ARC模式 xcode将在编译自动时为各个对象引用数量改变时插入 retain和release方法从此解放双手对循">
+<meta property="og:description" content="最近要给一个应用加上提示更新功能,遇到了几个坑,虽然也很快解决了但是还是记录下来给大家当做提示教训. Android 7.0 文件权限代码一把梭后,在调试时就碰到了第一个问题,apk下载安装时报了 FileUriExposedException随后了解了一下这是android 7.0新增的文件权限问题. 从Android 7.0开始,一个应用提供自身文件给其它应用使用时,如果给出一个file://">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-18T13:48:20.947Z">
+<meta property="og:updated_time" content="2018-02-02T04:01:31.017Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="内存管理笔记">
-<meta name="twitter:description" content="OC中的内存管理oc作为面向对象的c,其内存也是自己管理的,但oc中对其操作进行了优化从c的自己开辟和回收内存,改进为手动计算引用数 当引用增加时 调用retain方法为此变量引用数+1当要释放引用时 调用release方法为引用数-1当引用数为0时将释放内存 在xcode4后 引入了ARC模式 xcode将在编译自动时为各个对象引用数量改变时插入 retain和release方法从此解放双手对循">
+<meta name="twitter:title" content="Android 7.0文件权限和应用安装">
+<meta name="twitter:description" content="最近要给一个应用加上提示更新功能,遇到了几个坑,虽然也很快解决了但是还是记录下来给大家当做提示教训. Android 7.0 文件权限代码一把梭后,在调试时就碰到了第一个问题,apk下载安装时报了 FileUriExposedException随后了解了一下这是android 7.0新增的文件权限问题. 从Android 7.0开始,一个应用提供自身文件给其它应用使用时,如果给出一个file://">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://liaoshengrui.github.io/2018/01/18/内存管理笔记/"/>
+  <link rel="canonical" href="https://liaoshengrui.github.io/2018/02/02/Android 7.0文件权限和应用安装/"/>
 
 
 
 
 
-  <title>内存管理笔记 | LsrBlog</title>
+  <title>Android 7.0文件权限和应用安装 | LsrBlog</title>
   
 
 
@@ -253,7 +253,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://liaoshengrui.github.io/2018/01/18/内存管理笔记/">
+    <link itemprop="mainEntityOfPage" href="https://liaoshengrui.github.io/2018/02/02/Android 7.0文件权限和应用安装/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="liaoshengrui">
@@ -270,7 +270,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">内存管理笔记</h1>
+          <h1 class="post-title" itemprop="name headline">Android 7.0文件权限和应用安装</h1>
         
 
         <div class="post-meta">
@@ -282,8 +282,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-18T21:41:29+08:00">
-                2018-01-18
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-02T10:07:21+08:00">
+                2018-02-02
               </time>
             
 
@@ -342,43 +342,21 @@
       
 
       
-        <h3 id="OC中的内存管理"><a href="#OC中的内存管理" class="headerlink" title="OC中的内存管理"></a>OC中的内存管理</h3><p>oc作为面向对象的c,其内存也是自己管理的,但oc中对其操作进行了优化<br>从c的自己开辟和回收内存,改进为手动计算引用数</p>
-<p>当引用增加时 调用retain方法为此变量引用数+1<br>当要释放引用时 调用release方法为引用数-1<br>当引用数为0时将释放内存</p>
-<p>在xcode4后 引入了ARC模式 xcode将在编译自动时为各个对象引用数量改变时插入 retain和release方法<br>从此解放双手<br>对循环引用的解决方案为在编写代码时 一方使用强引用 一方使用弱引用</p>
-<h3 id="python的垃圾回收"><a href="#python的垃圾回收" class="headerlink" title="python的垃圾回收"></a>python的垃圾回收</h3><ul>
-<li><p>自动引用计数</p>
-<p>  对象每增加一个引用 引用计数+1<br>  减少引用计数-1 当引用计数为0删除对象</p>
-<p>  缺点:无法清理循环引用</p>
-</li>
-</ul>
-<ul>
-<li><p>隔代回收</p>
-<p> python每个对象创建时 ,都会将其加入零代链表 在满足一定条件(<strong>创建对象计数-回收对象大于一定数量</strong>)后<br>  判断链表中对象是否有互相引用 有的引用计数-1 引用计数为0的删除 引用计数大于1且无互相引用的 加入到  一代链表</p>
-</li>
-</ul>
-<h3 id="Java的垃圾回收"><a href="#Java的垃圾回收" class="headerlink" title="Java的垃圾回收"></a>Java的垃圾回收</h3><ul>
-<li><p>可达性分析</p>
-<p>  以 GC Root对象为起点向下遍历所有对象为可用对象,其余为不可用对象</p>
-<p>  GC Root对象包括下面几种:</p>
-<ol>
-<li>栈中局部变量表中引用的对象</li>
-<li>方法区中静态属性引用的对象</li>
-<li>方法区常量引用的对象</li>
-<li>本地方法栈中JNI引用对象</li>
-</ol>
-</li>
-<li><p>标记-清除算法</p>
-<p>  分为标记,清除两个阶段:首先标记出所有需要回收的对象,标记完成后统一回收所有被标记的对象</p>
-<p>  缺点:标记和清除效率都低,且产生大量不连续内存</p>
-</li>
-<li><p>复制算法( 新生代回收算法 )</p>
-<p>  将内存分为2小1大3块为8:1:1 ,每次只用其中一大一小,当这触发回收时,将其中存活的对象复制到另一块未使用的小内存去,然后将已经使用过的内存空间一次性清理掉</p>
-<p>  当一些对象经过多次Minor Gc后还仍然存活就会被移动到老年代中</p>
-</li>
-<li><p>标记-整理算法 ( 老年代回收算法 )</p>
-<p>  让存活对象统一向一端移动(不可用对象所占内存在移动时被覆盖),然后直接清除边界以外的内存空间</p>
-</li>
-</ul>
+        <p>最近要给一个应用加上提示更新功能,遇到了几个坑,虽然也很快解决了但是还是记录下来给大家当做提示教训.</p>
+<h2 id="Android-7-0-文件权限"><a href="#Android-7-0-文件权限" class="headerlink" title="Android 7.0 文件权限"></a>Android 7.0 文件权限</h2><p>代码一把梭后,在调试时就碰到了第一个问题,apk下载安装时报了 FileUriExposedException<br>随后了解了一下这是android 7.0新增的文件权限问题.</p>
+<p>从Android 7.0开始,一个应用提供自身文件给其它应用使用时,如果给出一个file://格式的URI的话,应用会抛出FileUriExposedException.这是由于谷歌认为目标app可能不具有文件权限,会造成潜在的问题,所以让这一行为快速失败.</p>
+<p>谷歌官方推荐的解决方案.即使用FileProvider来生成一个content://格式的URI</p>
+<h4 id="manifest声明"><a href="#manifest声明" class="headerlink" title="manifest声明"></a>manifest声明</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;manifest&gt;</span><br><span class="line">    ...</span><br><span class="line">    &lt;application&gt;</span><br><span class="line">        ...</span><br><span class="line">        &lt;provider</span><br><span class="line">            android:name=&quot;android.support.v4.content.FileProvider&quot;</span><br><span class="line">            android:authorities=&quot;packageName.fileprovider&quot;</span><br><span class="line">            android:exported=&quot;false&quot;</span><br><span class="line">            android:grantUriPermissions=&quot;true&quot;&gt;</span><br><span class="line">            &lt;meta-data</span><br><span class="line">                android:name=&quot;android.support.FILE_PROVIDER_PATHS&quot;</span><br><span class="line">                android:resource=&quot;@xml/file_paths&quot; /&gt;</span><br><span class="line">        &lt;/provider&gt;</span><br><span class="line">        ...</span><br><span class="line">    &lt;/application&gt;</span><br><span class="line">&lt;/manifest&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="编写file-paths-xml"><a href="#编写file-paths-xml" class="headerlink" title="编写file_paths.xml"></a>编写file_paths.xml</h4><p>文件的名字没有要求，只要放在xml文件夹下面就可以了,所以为了保证唯一建议加上应用包名</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;paths&gt;</span><br><span class="line">    &lt;external-path path=&quot;.&quot; name=&quot;camera_photos&quot; /&gt;</span><br><span class="line">&lt;/paths&gt;</span><br><span class="line"></span><br><span class="line">&lt;files-path/&gt;  代表的根目录： Context.getFilesDir()</span><br><span class="line">&lt;external-path/&gt; 代表的根目录: Environment.getExternalStorageDirectory()</span><br><span class="line">&lt;cache-path/&gt; 代表的根目录: getCacheDir()</span><br></pre></td></tr></table></figure>
+<p>path 表示根目录下的文件路径 .为所有<br>name 标记名</p>
+<h4 id="使用FileProvider提供的uri"><a href="#使用FileProvider提供的uri" class="headerlink" title="使用FileProvider提供的uri"></a>使用FileProvider提供的uri</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Intent i = new Intent(Intent.ACTION_VIEW);</span><br><span class="line">File file=new File(APK_PATH);</span><br><span class="line">if (Build.VERSION.SDK_INT &gt;= 24) &#123;</span><br><span class="line">  Uri uriForFile = FileProvider.getUriForFile(context, context.getPackageName() + &quot;.fileprovider&quot;, file);</span><br><span class="line">  i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);</span><br><span class="line">  i.setDataAndType(uriForFile, &quot;application/vnd.android.package-archive&quot;);</span><br><span class="line">&#125; else &#123;</span><br><span class="line">  i.setDataAndType(Uri.fromFile(file), &quot;application/vnd.android.package-archive&quot;);</span><br><span class="line">&#125;</span><br><span class="line">  context.startActivity(i);</span><br></pre></td></tr></table></figure>
+<p>然而做好了上面的操作后又报出了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Error:Execution failed for task &apos;:app:processReleaseManifest&apos;.</span><br><span class="line">&gt; Manifest merger failed with multiple errors, see logs</span><br></pre></td></tr></table></figure></p>
+<p>查找资料后发现是自己用的第三方图片选择框架已经使用了android.support.v4.content.FileProvider</p>
+<p>于是写个空provider继承了 FileProvider 问题解决<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public class MyFileProvider extends FileProvider &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">将清单文件中注册的provider修改成自己的provider</span><br><span class="line">&lt;provider</span><br><span class="line">  android:name=&quot;.MyFileProvider&quot;</span><br><span class="line">  android:authorities=&quot;packageName.fileprovider&quot;</span><br><span class="line">  android:exported=&quot;false&quot;</span><br><span class="line">  android:grantUriPermissions=&quot;true&quot;&gt;</span><br><span class="line">  &lt;meta-data</span><br><span class="line">    android:name=&quot;android.support.FILE_PROVIDER_PATHS&quot;</span><br><span class="line">    android:resource=&quot;@xml/file_paths&quot; /&gt;</span><br><span class="line">&lt;/provider&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="APK安装"><a href="#APK安装" class="headerlink" title="APK安装"></a>APK安装</h2><p>终于解决权限问题后开始安装APK,心想终于解决了,然后出现了应用未安装…..</p>
+<p>我眉头一皱发现事情并不简单versionCode和versionName我都加高了啊为什么安装会跟原应用冲突呢?</p>
+<p>仔细一想,应该是签名问题,我当前调试用的是debug自带的签名正式版本是正式的签名.<br>签名后再试,果然解决了</p>
 
       
     </div>
@@ -396,11 +374,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/java/" rel="tag"># java</a>
-          
-            <a href="/tags/oc/" rel="tag"># oc</a>
-          
-            <a href="/tags/python/" rel="tag"># python</a>
+            <a href="/tags/android/" rel="tag"># android</a>
           
         </div>
       
@@ -413,8 +387,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/01/13/Okhttp拦截器的使用/" rel="next" title="Okhttp拦截器的使用">
-                <i class="fa fa-chevron-left"></i> Okhttp拦截器的使用
+              <a href="/2018/01/26/Glide(3.8.0)源码详细解析(一丶基本流程)/" rel="next" title="Glide(3.8.0)源码详细解析(一丶基本流程)">
+                <i class="fa fa-chevron-left"></i> Glide(3.8.0)源码详细解析(一丶基本流程)
               </a>
             
           </div>
@@ -422,10 +396,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/01/20/Picasso源码分析/" rel="prev" title="Picasso源码分析">
-                Picasso源码分析 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -561,7 +531,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#OC中的内存管理"><span class="nav-number">1.</span> <span class="nav-text">OC中的内存管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#python的垃圾回收"><span class="nav-number">2.</span> <span class="nav-text">python的垃圾回收</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java的垃圾回收"><span class="nav-number">3.</span> <span class="nav-text">Java的垃圾回收</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Android-7-0-文件权限"><span class="nav-number">1.</span> <span class="nav-text">Android 7.0 文件权限</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#manifest声明"><span class="nav-number">1.0.1.</span> <span class="nav-text">manifest声明</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编写file-paths-xml"><span class="nav-number">1.0.2.</span> <span class="nav-text">编写file_paths.xml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用FileProvider提供的uri"><span class="nav-number">1.0.3.</span> <span class="nav-text">使用FileProvider提供的uri</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#APK安装"><span class="nav-number">2.</span> <span class="nav-text">APK安装</span></a></li></ol></div>
             
 
           </div>
